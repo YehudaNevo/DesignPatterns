@@ -17,6 +17,33 @@ class Singleton:
             raise RuntimeError("Use getInstance() to create a new instance")
 
 
+import json
+
+
+class ConfigurationManager:
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
+
+    def __init__(self):
+        if self._instance is not None:
+            raise RuntimeError("Use getInstance() to create a new instance")
+        self._config = None
+
+    def load_config(self, config_file):
+        with open(config_file, "r") as file:
+            self._config = json.load(file)
+
+    def get_config(self, key):
+        if self._config is None:
+            raise RuntimeError("Configuration has not been loaded")
+        return self._config.get(key)
+
+
 class MusicPlayer:
     _instance = None
 
